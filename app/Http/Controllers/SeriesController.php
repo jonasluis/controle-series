@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\Serie;
+
 
 class SeriesController extends Controller
 {
     public function index(){
-        $series = DB::select('SELECT nome from series;');
+        // $series = Serie::all(); busca todos na ordem de cadastro
+        // Lista em ordem Alfabetica
+        $series = Serie::query()->orderBy('nome')->get();
+
         return view('series.index')->with('series', $series);
     }
     
@@ -19,11 +24,11 @@ class SeriesController extends Controller
 
     public function store(Request $request){
         $nomeSerie = $request->input('nome');
+        $serie = new Serie();
+        $serie->nome = $nomeSerie;
+        $serie->save();
 
-        if(DB::insert('INSERT INTO series (nome) VALUES (?)', [$nomeSerie])){
-            return "ok";
-        } else {
-            return "Deu Erro";
-        }
+        return redirect('/series');
+        
     }
 }
