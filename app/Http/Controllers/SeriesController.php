@@ -13,7 +13,7 @@ class SeriesController extends Controller
             'Lost',
             'Greys Anatomy'
         ];
-        return view('listar-series')->with('series', $series);
+        return view('series.index')->with('series', $series);
     }
 
 }
