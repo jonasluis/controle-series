@@ -29,7 +29,7 @@ class SeriesController extends Controller
     
     
 
-        return redirect('/series');
+        return to_route('series.index');
         
     }
 }
