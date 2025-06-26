@@ -10,12 +10,14 @@ use App\Models\Serie;
 
 class SeriesController extends Controller
 {
-    public function index(){
+    public function index(Request $request){
         // $series = Serie::all(); busca todos na ordem de cadastro
         // Lista em ordem Alfabetica
         $series = Serie::query()->orderBy('nome')->get();
+        $mensagemSucesso = $request->session()->get('mensagem.sucesso');
 
-        return view('series.index')->with('series', $series);
+        return view('series.index')->with('series', $series)
+        ->with('mensagemSucesso', $mensagemSucesso);
     }
     
     public function create(){
@@ -26,6 +28,7 @@ class SeriesController extends Controller
 
 
         Serie::create($request->all());
+        session(['mensagem.sucesso' => 'Serie adicionada com sucesso']);
     
     
 
@@ -34,6 +37,8 @@ class SeriesController extends Controller
 
     public function destroy(Request $request, ){
         Serie::destroy($request->series);
+
+        $request->session()->flash('mensagem.sucesso', 'Série removida com sucesso');
 
         return to_route('series.index');
     }
